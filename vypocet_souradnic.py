@@ -1,4 +1,5 @@
 from math import sin, tan, radians, log
+from turtle import forward, left, right, exitonclick
 
 p = input('set projection')
 while p != "L" and p != 'A' and p != 'B' and p != 'M':
@@ -144,6 +145,38 @@ if p == 'M':
         point[1] = (float(input('enter longitude of point')))
         print('x = ' + str(mercator_x(point[0])))
         print('y = ' + str(mercator_y(point[1])))
+
+"""
+for i in range(4):
+    forward((long[36])*10)
+    left(90)
+    forward((lat[10]) * 10)
+    left(90)
+    forward((long[36]) * 10)
+    right(90)
+    forward((lat[10]) * 10)
+    right(90)
+
+forward((long[36])*10)
+left(90)
+forward((lat[10]) * 10)
+left(90)
+forward((long[36]) * 10)
+left(90)
+
+for i in range(9):
+    forward((lat[18])*10)
+    left(90)
+    forward((long[19]) * 10)
+    left(90)
+    forward((lat[18]) * 10)
+    right(90)
+    forward((long[19]) * 10)
+    right(90)
+
+forward((lat[18])*10)
+right(90)
+exitonclick()"""
 
 
 
