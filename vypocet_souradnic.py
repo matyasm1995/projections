@@ -23,7 +23,6 @@ except ValueError:
    m = int(input('set the scale again'))
 
 R = abs((r / m) * 100000) #uprava polomeru Zeme meritkem
-
 lat = []
 long = []
 point = [1,1]
@@ -166,15 +165,15 @@ if p == 'M': #vypsani hodnot z.s. a z.d. pro mercatora + vypocet souradnic bodu
 
 
 for k in range(int(len(lat)/2)): #zelvi grafika
-   for i in range(len(long)):
-       forward((long[i]-long[i-1])*10)
-   left(90)
-   forward((lat[int(len(lat)/2+k+1)])*10)
-   left(90)
-   for i in range(len(long)):
-       forward((long[i]-long[i-1])*10)
-       left(0)
-   right(90)
-   forward((lat[int(len(lat) / 2 + k+1)])*10)
-   right(90)
+    for i in range(len(long)): #posun po ose x o 180 stupnu
+        forward((long[i]-long[i-1])*10)
+    left(90) 
+    forward((lat[int(len(lat)/2+k+1)])*10) #posun o 10 stupnu po ose y
+    left(90)
+    for i in range(len(long)):  #posun po ose x o 180 stupnu
+        forward((long[i]-long[i-1])*10)
+        left(0)
+    right(90)
+    forward((lat[int(len(lat) / 2 + k+1)])*10) #posun o 10 stupnu po ose y
+    right(90)
 exitonclick()
