@@ -16,11 +16,14 @@ except ValueError:
 if r == 0:
    r = 6371.11
 
-try:             #volba meritka
-   m = int(input('set the scale'))
+try:             #volba meritka#
+    m = int(input('set the scale'))
 except ValueError:
-   print('scale has to be integer')
-   m = int(input('set the scale again'))
+    print('scale has to be integer')
+    m = int(input('set the scale again'))
+except ZeroDivisionError:
+    print('scale can not be zero')
+    m = int(input('set the scale again'))
 
 R = abs((r / m) * 100000) #uprava polomeru Zeme meritkem
 lat = []
@@ -164,16 +167,33 @@ if p == 'M': #vypsani hodnot z.s. a z.d. pro mercatora + vypocet souradnic bodu
        print('y = ' + str(mercator_y(point[1])))
 
 
-for k in range(int(len(lat)/2)): #zelvi grafika
-    for i in range(len(long)): #posun po ose x o 180 stupnu
-        forward((long[i]-long[i-1])*10)
-    left(90) 
-    forward((lat[int(len(lat)/2+k+1)])*10) #posun o 10 stupnu po ose y
+for k in range(0,8,2):
+    forward((long[36]) * 10)
     left(90)
-    for i in range(len(long)):  #posun po ose x o 180 stupnu
-        forward((long[i]-long[i-1])*10)
-        left(0)
+    forward((lat[(10 + k)]-lat[10 + k-1])*10)
+    left(90)
+    forward((long[36]) * 10)
     right(90)
-    forward((lat[int(len(lat) / 2 + k+1)])*10) #posun o 10 stupnu po ose y
+    forward((lat[(10 + k + 1)] - lat[10 + k]) * 10)
     right(90)
+
+forward((long[36]) * 10)
+left(90)
+forward((lat[(18)] - lat[17]) * 10)
+left(90)
+forward((long[36]) * 10)
+left(90)
+
+for i in range(9):
+    forward(lat[18]*10)
+    left(90)
+    forward(long[19]*10)
+    left(90)
+    forward(lat[18]*10)
+    right(90)
+    forward(long[19]*10)
+    right(90)
+
 exitonclick()
+
+
