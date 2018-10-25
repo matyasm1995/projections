@@ -15,15 +15,17 @@ except ValueError:
 
 if r == 0:
    r = 6371.11
+   
+if r<0:
+   r = float(input('you entered a negative number, set the radius of the Earth in km again or enter 0 to set radius to 6371.11km'))
 
 try:             #volba meritka#
     m = int(input('set the scale'))
 except ValueError:
     print('scale has to be integer')
     m = int(input('set the scale again'))
-except ZeroDivisionError:
-    print('scale can not be zero')
-    m = int(input('set the scale again'))
+if m < 0:
+   m = int(input('set the scale again'))
 
 R = abs((r / m) * 100000) #uprava polomeru Zeme meritkem
 lat = []
