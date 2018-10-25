@@ -104,8 +104,10 @@ def bod(zobrazeni_x,zobrazeni_y):
        point[1] = (float(input('enter longitude of point')))
        while point[1] > 180 or point[1] < -180:
            point[1] = (float(input('enter longitude of point again')))
-       print('x = ' + str(zobrazeni_x(point[0])))
-       print('y = ' + str(zobrazeni_y(point[1])))
+       try:
+           print('x = ' + str(zobrazeni_y(point[0])))
+       except:
+           print('x = -')
 
 if p == 'L': #vypsani hodnot z.s. a z.d. pro lamberta + vypocet souradnic bodu
    for lam in range(-180,181,10):
