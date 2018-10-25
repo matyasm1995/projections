@@ -96,18 +96,27 @@ def mercator_y(fi):
    else:
        return yr
       
-def bod(zobrazeni_x,zobrazeni_y):
-   while point != [0,0]:
-       point[0] = (float(input('enter latitude of point')))
-       while point[0]>90 or point[0]<-90:
-           point[0] = (float(input('enter latitude of point again')))
-       point[1] = (float(input('enter longitude of point')))
-       while point[1] > 180 or point[1] < -180:
-           point[1] = (float(input('enter longitude of point again')))
-       try:
-           print('x = ' + str(zobrazeni_y(point[0])))
-       except:
-           print('x = -')
+def bod(zobrazeni_x, zobrazeni_y):
+    while point != [0, 0]:
+        try:
+            point[0] = (float(input('enter latitude of point')))
+        except ValueError:
+            print('you did not enter a number')
+            point[0] = (float(input('enter latitude of point again')))
+        while point[0] > 90 or point[0] < -90:
+            point[0] = (float(input('enter latitude of point again')))
+        try:
+            point[1] = (float(input('enter longitude of point')))
+        except ValueError:
+            print('you did not enter a number')
+            point[1] = (float(input('enter longitude of point again')))
+        while point[1] > 180 or point[1] < -180:
+            point[1] = (float(input('enter longitude of point again')))
+        try:
+            print('x = ' + str(zobrazeni_y(point[0])))
+        except:
+            print('x = -')
+        print('y = ' + str(zobrazeni_x(point[1])))
 
 if p == 'L': #vypsani hodnot z.s. a z.d. pro lamberta + vypocet souradnic bodu
    for lam in range(-180,181,10):
