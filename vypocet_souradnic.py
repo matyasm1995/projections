@@ -95,6 +95,17 @@ def mercator_y(fi):
        return ('-')
    else:
        return yr
+      
+def bod(zobrazeni_x,zobrazeni_y):
+   while point != [0,0]:
+       point[0] = (float(input('enter latitude of point')))
+       while point[0]>90 or point[0]<-90:
+           point[0] = (float(input('enter latitude of point again')))
+       point[1] = (float(input('enter longitude of point')))
+       while point[1] > 180 or point[1] < -180:
+           point[1] = (float(input('enter longitude of point again')))
+       print('x = ' + str(zobrazeni_x(point[0])))
+       print('y = ' + str(zobrazeni_y(point[1])))
 
 if p == 'L': #vypsani hodnot z.s. a z.d. pro lamberta + vypocet souradnic bodu
    for lam in range(-180,181,10):
@@ -103,16 +114,8 @@ if p == 'L': #vypsani hodnot z.s. a z.d. pro lamberta + vypocet souradnic bodu
        lat.append(lambert_y(fi))
    print('parallels: ' + str(lat))
    print('meridians: ' + str(long))
-   while point != [0,0]:
-       point[0] = (float(input('enter latitude of point')))
-       while point[0]>90 or point[0]<-90:
-           point[0] = (float(input('enter latitude of point again')))
-       point[1] = (float(input('enter longitude of point')))
-       while point[1] > 180 or point[1] < -180:
-           point[1] = (float(input('enter longitude of point again')))
-       print('x = ' + str(lambert_x(point[0])))
-       print('y = ' + str(lambert_y(point[1])))
-
+   bod(lambert_x,lambert_y)
+   
 if p == 'A': #vypsani hodnot z.s. a z.d. pro marina + vypocet souradnic bodu
    for lam in range(-180,181,10):
        long.append(marin_x(lam))
@@ -120,15 +123,7 @@ if p == 'A': #vypsani hodnot z.s. a z.d. pro marina + vypocet souradnic bodu
        lat.append(marin_y(fi))
    print('parallels: ' + str(lat))
    print('meridians: ' + str(long))
-   while point != [0, 0]:
-       point[0] = (float(input('enter latitude of point')))
-       while point[0] > 90 or point[0] < -90:
-           point[0] = (float(input('enter latitude of point again')))
-       point[1] = (float(input('enter longitude of point')))
-       while point[1] > 180 or point[1] < -180:
-           point[1] = (float(input('enter longitude of point again')))
-       print('x = ' + str(marin_x(point[0])))
-       print('y = ' + str(marin_y(point[1])))
+   bod(marin_x,marin_y)
 
 if p == 'B': #vypsani hodnot z.s. a z.d. pro brauna + vypocet souradnic bodu
    for lam in range(-180,181,10):
@@ -137,16 +132,8 @@ if p == 'B': #vypsani hodnot z.s. a z.d. pro brauna + vypocet souradnic bodu
        lat.append(braun_y(fi))
    print('parallels: ' + str(lat))
    print('meridians: ' + str(long))
-   while point != [0, 0]:
-       point[0] = (float(input('enter latitude of point')))
-       while point[0] > 90 or point[0] < -90:
-           point[0] = (float(input('enter latitude of point again')))
-       point[1] = (float(input('enter longitude of point')))
-       while point[1] > 180 or point[1] < -180:
-           point[1] = (float(input('enter longitude of point again')))
-       print('x = ' + str(braun_x(point[0])))
-       print('y = ' + str(braun_y(point[1])))
-
+   bod(braun_x,braun_y)
+   
 if p == 'M': #vypsani hodnot z.s. a z.d. pro mercatora + vypocet souradnic bodu
    for lam in range(-180,181,10):
        long.append(mercator_x(lam))
@@ -158,16 +145,7 @@ if p == 'M': #vypsani hodnot z.s. a z.d. pro mercatora + vypocet souradnic bodu
            continue
    print('parallels: ' + str(lat))
    print('meridians: ' + str(long))
-   while point != [0, 0]:
-       point[0] = (float(input('enter latitude of point')))
-       while point[0] > 90 or point[0] < -90:
-           point[0] = (float(input('enter latitude of point again')))
-       point[1] = (float(input('enter longitude of point')))
-       while point[1] > 180 or point[1] < -180:
-           point[1] = (float(input('enter longitude of point again')))
-       print('x = ' + str(mercator_x(point[0])))
-       print('y = ' + str(mercator_y(point[1])))
-
+   bod(mercator_x,mercator_y)
 
 for k in range(0,8,2):
     forward((long[36]) * 10)
