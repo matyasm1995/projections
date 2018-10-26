@@ -1,40 +1,48 @@
 from math import sin, tan, radians, log
 from turtle import forward, left, right, exitonclick, speed
 
+
 def lambert_x(i):  # vypocet lamberta
     x = R * (radians(i))
     x = round(x, 1)
     return x
+
 
 def lambert_y(i):
     y = R * sin(radians(i))
     y = round(y, 1)
     return y
 
+
 def marin_x(i):  # vypocet marina
     x = R * (radians(i))
     x = round(x, 1)
     return x
+
 
 def marin_y(i):
     y = R * (radians(i))
     y = round(y, 1)
     return y
 
+
 def braun_x(i):  # vypocet brauna
     x = R * (radians(i))
     x = round(x, 1)
     return x
+
 
 def braun_y(i):
     y = 2 * R * tan((radians(i)) / 2)
     y = round(y, 1)
     return y
 
+
 def mercator_x(i):  # vypocet mercatora
     x = R * (radians(i))
     x = round(x, 1)
     return x
+
 
 def mercator_y(i):
     y = R * log((1 / tan(((radians(90 - i)) / 2))))
@@ -50,6 +58,7 @@ def delka(zobrazeni_x):
         else:
             long.append(x)
     print('meridians: ' + str(long))
+
 
 def sirka(zobrazeni_y):
     for i in range(-90, 91, 10):
@@ -74,6 +83,7 @@ def inputNumber(message):
         else:
             return userInput
 
+
 def bod(zobrazeni_x, zobrazeni_y):
     while point != [0, 0]:
         point[0] = inputNumber('enter latitude of point')
@@ -82,33 +92,39 @@ def bod(zobrazeni_x, zobrazeni_y):
         point[1] = inputNumber('enter longitude of point')
         while point[1] > 180 or point[1] < -180:
             point[1] = inputNumber('enter longitude of point again')
-        try: #osetreni mercatora
-            print('x = ' + str(zobrazeni_y(point[0])))
+        try:  # osetreni mercatora
+            if -100 < zobrazeni_y(point[0]) < 100:
+                print('x = ' + str(zobrazeni_y(point[0])))
+            else:
+                print('x = - ')
         except:
             print('x = -')
-        print('y = ' + str(zobrazeni_x(point[1])))
+        if -100 < zobrazeni_x(point[1]) < 100:
+            print('y = ' + str(zobrazeni_x(point[1])))
+        else:
+            print('y = -')
 
+
+lat = []
+long = []
+point = [1, 1]
 
 projection = input('set projection')  # zjisteni zobrazeni
-
 while projection != "L" and projection != 'A' and projection != 'B' and projection != 'M':
     print('choose L for Lambert, A for Marin, B for Braun or M for Mercator')
     projection = input('set projection')
 
 radius = inputNumber('set the radius of the Earth in km or enter 0 to set radius to 6371.11km')
-while radius<0:
+while radius < 0:
     radius = inputNumber('set the radius of the Earth in km or enter 0 to set radius to 6371.11km')
 if radius == 0:
     radius = 6371.11
 
 scale = inputNumber('set the scale')
-while scale<=0:
+while scale <= 0:
     scale = inputNumber('set the scale again')
 
 R = abs((radius / scale) * 100000)  # uprava polomeru Zeme meritkem
-lat = []
-long = []
-point = [1, 1]
 
 if projection == 'L':  # vypsani hodnot z.s. a z.d. pro lamberta + vypocet souradnic bodu
     delka(lambert_x)
