@@ -50,9 +50,9 @@ def mercator_y(i):
     return y
 
 
-def delka(zobrazeni_x):
+def longitude(projection_x):
     for i in range(-180, 181, 10):
-        x = (zobrazeni_x(i))
+        x = (projection_x(i))
         if x > 100 or x < -100:
             long.append('-')
         else:
@@ -60,10 +60,10 @@ def delka(zobrazeni_x):
     print('meridians: ' + str(long))
 
 
-def sirka(zobrazeni_y):
+def latitude(projection_y):
     for i in range(-90, 91, 10):
         try:
-            y = (zobrazeni_y(i))
+            y = (projection_y(i))
             if y > 100 or y < -100:
                 lat.append('-')
             else:
@@ -83,6 +83,7 @@ def inputFloat(message):
         else:
             return userInput
 
+
 def inputInteger(message):
     while True:
         try:
@@ -93,7 +94,8 @@ def inputInteger(message):
         else:
             return userInput
 
-def bod(zobrazeni_x, zobrazeni_y):
+
+def point_calc(projection_x, projection_y):
     while point != [0, 0]:
         point[0] = inputFloat('enter latitude of point')
         while point[0] > 90 or point[0] < -90:
@@ -102,14 +104,14 @@ def bod(zobrazeni_x, zobrazeni_y):
         while point[1] > 180 or point[1] < -180:
             point[1] = inputFloat('enter longitude of point again')
         try:  # osetreni mercatora
-            if -100 < zobrazeni_y(point[0]) < 100:
-                print('x = ' + str(zobrazeni_y(point[0])))
+            if -100 < projection_y(point[0]) < 100:
+                print('x = ' + str(projection_y(point[0])))
             else:
                 print('x = - ')
         except:
             print('x = -')
-        if -100 < zobrazeni_x(point[1]) < 100:
-            print('y = ' + str(zobrazeni_x(point[1])))
+        if -100 < projection_x(point[1]) < 100:
+            print('y = ' + str(projection_x(point[1])))
         else:
             print('y = -')
 
@@ -136,24 +138,24 @@ while scale <= 0:
 R = abs((radius / scale) * 100000)  # uprava polomeru Zeme meritkem
 
 if projection == 'L':  # vypsani hodnot z.s. a z.d. pro lamberta + vypocet souradnic bodu
-    delka(lambert_x)
-    sirka(lambert_y)
-    bod(lambert_x, lambert_y)
+    longitude(lambert_x)
+    latitude(lambert_y)
+    point_calc(lambert_x, lambert_y)
 
 if projection == 'A':  # vypsani hodnot z.s. a z.d. pro marina + vypocet souradnic bodu
-    delka(marin_x)
-    sirka(marin_y)
-    bod(marin_x, marin_y)
+    longitude(marin_x)
+    latitude(marin_y)
+    point_calc(marin_x, marin_y)
 
 if projection == 'B':  # vypsani hodnot z.s. a z.d. pro brauna + vypocet souradnic bodu
-    delka(braun_x)
-    sirka(braun_y)
-    bod(braun_x, braun_y)
+    longitude(braun_x)
+    latitude(braun_y)
+    point_calc(braun_x, braun_y)
 
 if projection == 'M':  # vypsani hodnot z.s. a z.d. pro mercatora + vypocet souradnic bodu
-    delka(mercator_x)
-    sirka(mercator_y)
-    bod(mercator_x, mercator_y)
+    longitude(mercator_x)
+    latitude(mercator_y)
+    point_calc(mercator_x, mercator_y)
 
 for k in range(0, 8, 2):
     forward((long[36]) * 10)
