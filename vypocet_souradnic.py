@@ -73,7 +73,7 @@ def sirka(zobrazeni_y):
     print('parallels: ' + str(lat))
 
 
-def inputNumber(message):
+def inputFloat(message):
     while True:
         try:
             userInput = float(input(message))
@@ -83,15 +83,24 @@ def inputNumber(message):
         else:
             return userInput
 
+def inputInteger(message):
+    while True:
+        try:
+            userInput = int(input(message))
+        except ValueError:
+            print("Not a integer")
+            continue
+        else:
+            return userInput
 
 def bod(zobrazeni_x, zobrazeni_y):
     while point != [0, 0]:
-        point[0] = inputNumber('enter latitude of point')
+        point[0] = inputFloat('enter latitude of point')
         while point[0] > 90 or point[0] < -90:
-            point[0] = inputNumber('enter latitude of point again')
-        point[1] = inputNumber('enter longitude of point')
+            point[0] = inputFloat('enter latitude of point again')
+        point[1] = inputFloat('enter longitude of point')
         while point[1] > 180 or point[1] < -180:
-            point[1] = inputNumber('enter longitude of point again')
+            point[1] = inputFloat('enter longitude of point again')
         try:  # osetreni mercatora
             if -100 < zobrazeni_y(point[0]) < 100:
                 print('x = ' + str(zobrazeni_y(point[0])))
@@ -114,15 +123,15 @@ while projection != "L" and projection != 'A' and projection != 'B' and projecti
     print('choose L for Lambert, A for Marin, B for Braun or M for Mercator')
     projection = input('set projection')
 
-radius = inputNumber('set the radius of the Earth in km or enter 0 to set radius to 6371.11km')
+radius = inputFloat('set the radius of the Earth in km or enter 0 to set radius to 6371.11km')
 while radius < 0:
-    radius = inputNumber('set the radius of the Earth in km or enter 0 to set radius to 6371.11km')
+    radius = inputFloat('set the radius of the Earth in km or enter 0 to set radius to 6371.11km')
 if radius == 0:
     radius = 6371.11
 
-scale = inputNumber('set the scale')
+scale = inputInteger('set the scale')
 while scale <= 0:
-    scale = inputNumber('set the scale again')
+    scale = inputInteger('set the scale again')
 
 R = abs((radius / scale) * 100000)  # uprava polomeru Zeme meritkem
 
