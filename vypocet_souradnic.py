@@ -1,76 +1,67 @@
 from math import sin, tan, radians, log
 from turtle import forward, left, right, exitonclick, speed
 
-def lambert_x(lam):  # vypocet lamberta
-    x = R * (radians(lam))
-    xr = round(x, 1)
-    if xr > 100 or xr < -100:
-        return ('-')
-    else:
-        return xr
+def lambert_x(i):  # vypocet lamberta
+    x = R * (radians(i))
+    x = round(x, 1)
+    return x
+
+def lambert_y(i):
+    y = R * sin(radians(i))
+    y = round(y, 1)
+    return y
+
+def marin_x(i):  # vypocet marina
+    x = R * (radians(i))
+    x = round(x, 1)
+    return x
+
+def marin_y(i):
+    y = R * (radians(i))
+    y = round(y, 1)
+    return y
+
+def braun_x(i):  # vypocet brauna
+    x = R * (radians(i))
+    x = round(x, 1)
+    return x
+
+def braun_y(i):
+    y = 2 * R * tan((radians(i)) / 2)
+    y = round(y, 1)
+    return y
+
+def mercator_x(i):  # vypocet mercatora
+    x = R * (radians(i))
+    x = round(x, 1)
+    return x
+
+def mercator_y(i):
+    y = R * log((1 / tan(((radians(90 - i)) / 2))))
+    y = round(y, 1)
+    return y
 
 
-def lambert_y(fi):
-    y = R * sin(radians(fi))
-    yr = round(y, 1)
-    if yr > 100 or yr < -100:
-        return ('-')
-    else:
-        return yr
+def delka(zobrazeni_x):
+    for i in range(-180, 181, 10):
+        x = (zobrazeni_x(i))
+        if x > 100 or x < -100:
+            long.append('-')
+        else:
+            long.append(x)
+    print('meridians: ' + str(long))
 
-
-def marin_x(lam):  # vypocet marina
-    x = R * (radians(lam))
-    xr = round(x, 1)
-    if xr > 100 or xr < -100:
-        return ('-')
-    else:
-        return xr
-
-
-def marin_y(fi):
-    y = R * (radians(fi))
-    yr = round(y, 1)
-    if yr > 100 or yr < -100:
-        return ('-')
-    else:
-        return yr
-
-
-def braun_x(lam):  # vypocet brauna
-    x = R * (radians(lam))
-    xr = round(x, 1)
-    if xr > 100 or xr < -100:
-        return ('-')
-    else:
-        return xr
-
-
-def braun_y(fi):
-    y = 2 * R * tan((radians(fi)) / 2)
-    yr = round(y, 1)
-    if yr > 100 or yr < -100:
-        return ('-')
-    else:
-        return yr
-
-
-def mercator_x(lam):  # vypocet mercatora
-    x = R * (radians(lam))
-    xr = round(x, 1)
-    if xr > 100 or xr < -100:
-        return ('-')
-    else:
-        return xr
-
-
-def mercator_y(fi):
-    y = R * log((1 / tan(((radians(90 - fi)) / 2))))
-    yr = round(y, 1)
-    if yr > 100 or yr < -100:
-        return ('-')
-    else:
-        return yr
+def sirka(zobrazeni_y):
+    for i in range(-90, 91, 10):
+        try:
+            y = (zobrazeni_y(i))
+            if y > 100 or y < -100:
+                lat.append('-')
+            else:
+                lat.append(y)
+        except:
+            lat.append("-")
+    print('parallels: ' + str(lat))
 
 
 def inputNumber(message):
@@ -98,68 +89,45 @@ def bod(zobrazeni_x, zobrazeni_y):
         print('y = ' + str(zobrazeni_x(point[1])))
 
 
-p = input('set projection')  # zjisteni zobrazeni
+projection = input('set projection')  # zjisteni zobrazeni
 
-while p != "L" and p != 'A' and p != 'B' and p != 'M':
+while projection != "L" and projection != 'A' and projection != 'B' and projection != 'M':
     print('choose L for Lambert, A for Marin, B for Braun or M for Mercator')
-    p = input('set projection')
+    projection = input('set projection')
 
-r = inputNumber('set the radius of the Earth in km or enter 0 to set radius to 6371.11km')
+radius = inputNumber('set the radius of the Earth in km or enter 0 to set radius to 6371.11km')
+while radius<0:
+    radius = inputNumber('set the radius of the Earth in km or enter 0 to set radius to 6371.11km')
+if radius == 0:
+    radius = 6371.11
 
-while r<0:
-    r = inputNumber('set the radius of the Earth in km or enter 0 to set radius to 6371.11km')
+scale = inputNumber('set the scale')
+while scale<=0:
+    scale = inputNumber('set the scale again')
 
-if r == 0:
-    r = 6371.11
-
-m = inputNumber('set the scale')
-
-while m<=0:
-    m = inputNumber('set the scale again')
-
-R = abs((r / m) * 100000)  # uprava polomeru Zeme meritkem
+R = abs((radius / scale) * 100000)  # uprava polomeru Zeme meritkem
 lat = []
 long = []
 point = [1, 1]
 
-if p == 'L':  # vypsani hodnot z.s. a z.d. pro lamberta + vypocet souradnic bodu
-    for lam in range(-180, 181, 10):
-        long.append(lambert_x(lam))
-    for fi in range(-90, 91, 10):
-        lat.append(lambert_y(fi))
-    print('parallels: ' + str(lat))
-    print('meridians: ' + str(long))
+if projection == 'L':  # vypsani hodnot z.s. a z.d. pro lamberta + vypocet souradnic bodu
+    delka(lambert_x)
+    sirka(lambert_y)
     bod(lambert_x, lambert_y)
 
-if p == 'A':  # vypsani hodnot z.s. a z.d. pro marina + vypocet souradnic bodu
-    for lam in range(-180, 181, 10):
-        long.append(marin_x(lam))
-    for fi in range(-90, 91, 10):
-        lat.append(marin_y(fi))
-    print('parallels: ' + str(lat))
-    print('meridians: ' + str(long))
+if projection == 'A':  # vypsani hodnot z.s. a z.d. pro marina + vypocet souradnic bodu
+    delka(marin_x)
+    sirka(marin_y)
     bod(marin_x, marin_y)
 
-if p == 'B':  # vypsani hodnot z.s. a z.d. pro brauna + vypocet souradnic bodu
-    for lam in range(-180, 181, 10):
-        long.append(braun_x(lam))
-    for fi in range(-90, 91, 10):
-        lat.append(braun_y(fi))
-    print('parallels: ' + str(lat))
-    print('meridians: ' + str(long))
+if projection == 'B':  # vypsani hodnot z.s. a z.d. pro brauna + vypocet souradnic bodu
+    delka(braun_x)
+    sirka(braun_y)
     bod(braun_x, braun_y)
 
-if p == 'M':  # vypsani hodnot z.s. a z.d. pro mercatora + vypocet souradnic bodu
-    for lam in range(-180, 181, 10):
-        long.append(mercator_x(lam))
-    for fi in range(-90, 91, 10):
-        try:
-            lat.append(mercator_y(fi))
-        except ZeroDivisionError:  # vyreseni nekonecneho polu
-            lat.append('-')
-            continue
-    print('parallels: ' + str(lat))
-    print('meridians: ' + str(long))
+if projection == 'M':  # vypsani hodnot z.s. a z.d. pro mercatora + vypocet souradnic bodu
+    delka(mercator_x)
+    sirka(mercator_y)
     bod(mercator_x, mercator_y)
 
 for k in range(0, 8, 2):
