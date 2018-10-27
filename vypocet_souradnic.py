@@ -1,5 +1,5 @@
 from math import sin, tan, radians, log
-from turtle import forward, left, right, exitonclick, speed
+from turtle import forward, right, exitonclick, speed, setpos, down, up
 
 
 def lambert_x(i):  # vypocet lamberta
@@ -115,6 +115,39 @@ def point_calc(projection_x, projection_y):
         else:
             print('y = -')
 
+def graphic(i,j):
+    speed(6)
+    while i < (len(long)):
+        try:
+            x = float(long[i])
+            i = i + 1
+        except:
+            break
+    while j < (len(lat)):
+        try:
+            y = float(lat[j])
+            up()
+            setpos(x * -10, y * 10)
+            down()
+            forward(2 * x * 10)
+            up()
+            setpos(x * -10, -y * 10)
+            down()
+            forward(2 * x * 10)
+            up()
+            j = j + 1
+        except:
+            break
+    xi = x / ((i - 1) / 2)
+    right(90)
+    for i in range(i):
+        setpos(-10 * x, y * 10)
+        down()
+        forward(20 * y)
+        up()
+        x = x - xi
+    exitonclick()
+
 
 lat = []
 long = []
@@ -157,31 +190,7 @@ if projection == 'M':  # vypsani hodnot z.s. a z.d. pro mercatora + vypocet sour
     latitude(mercator_y)
     point_calc(mercator_x, mercator_y)
 
-for k in range(0, 8, 2):
-    forward((long[36]) * 10)
-    left(90)
-    forward((lat[(10 + k)] - lat[10 + k - 1]) * 10)
-    left(90)
-    forward((long[36]) * 10)
-    right(90)
-    forward((lat[(10 + k + 1)] - lat[10 + k]) * 10)
-    right(90)
+i = int((len(long) + 1) / 2)
+j = int((len(lat) + 1) / 2 - 1)
 
-forward((long[36]) * 10)
-left(90)
-forward((lat[(18)] - lat[17]) * 10)
-left(90)
-forward((long[36]) * 10)
-left(90)
-
-for i in range(9):
-    forward(lat[18] * 10)
-    left(90)
-    forward(long[19] * 10)
-    left(90)
-    forward(lat[18] * 10)
-    right(90)
-    forward(long[19] * 10)
-    right(90)
-
-exitonclick()
+graphic(i,j)
