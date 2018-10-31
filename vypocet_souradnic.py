@@ -1,5 +1,5 @@
 from math import sin, tan, radians, log
-from turtle import forward, right, exitonclick, speed, setpos, down, up
+from turtle import forward, right, exitonclick, speed, setpos, down, up, dot, write, ht
 
 
 def lambert_x(i):
@@ -102,6 +102,7 @@ def longitude(projection_x):
         else:
             lon.append(x)
     print('meridians: ' + str(lon))
+    return lon
 
 
 def latitude(projection_y):
@@ -119,6 +120,7 @@ def latitude(projection_y):
         except: #osetreni mercatora
             lat.append("-")
     print('parallels: ' + str(lat))
+    return lat
 
 
 def inputFloat(message):
@@ -156,38 +158,47 @@ def point_calc(projection_x, projection_y):
     funkce pro výpočet mapových souřadnic zadaného bodu
     :param projection_x: funkce pro výpočet zobrazení
     :param projection_y: funkce pro výpočet zobrazení
-    :return: jenom tiskne
+    :return: pole zadaných bodů
     """
     while point != [0, 0]:
-        point[0] = inputFloat('enter latitude of point')
-        while point[0] > 90 or point[0] < -90: #osetreni spravneho rozsahu zem. sirky
-            point[0] = inputFloat('enter latitude of point again')
-        point[1] = inputFloat('enter longitude of point')
-        while point[1] > 180 or point[1] < -180: #osetreni spravneho rozsahu zem. delky
-            point[1] = inputFloat('enter longitude of point again')
+        p = []
+        point[0] = inputFloat('enter longitude of point')
+        while point[0] > 180 or point[0] < -180: #osetreni spravneho rozsahu zem. sirky
+            point[0] = inputFloat('enter longitude of point again')
+        point[1] = inputFloat('enter latitude of point')
+        while point[1] > 90 or point[1] < -90: #osetreni spravneho rozsahu zem. delky
+            point[1] = inputFloat('enter latitude of point again')
         try:  # osetreni mercatora
-            if -100 < projection_y(point[0]) < 100: #osetreni prilis velkeho x
-                x = projection_y(point[0])
+            if -100 < projection_x(point[0]) < 100: #osetreni prilis velkeho x
+                x = projection_x(point[0])
+                p.append(x)
                 print('x = ' + str(x))
+
             else:
                 print('x = - ')
         except:
             print('x = -')
-        if -100 < projection_x(point[1]) < 100: #osetreni prilis velkeho y
-            y = projection_x(point[1])
+        if -100 < projection_y(point[1]) < 100: #osetreni prilis velkeho y
+            y = projection_y(point[1])
             print('y = ' + str(y))
+            p.append(y)
         else:
             print('y = -')
+        point_g.append(p)
+    return point_g
 
-
-def graphic(i, j):
+def graphic(i, j, lat, lon, point_g):
     """
     funkce pro vykresleni souradnicove site
     :param i: index prvku pole y-souřadnic
     :param j: index prvku pole x-souřadnic
-    :return: grafika
+    :param lat: pole souřadnic zeměpisné šířky
+    :param lon: pole souřadnic zeměpisné délky
+    :param point_g: pole bodů pro vykreslení
+    :return: kreslí grafiku
     """
-    speed(6)
+    speed(10)
+    ht()
     while i < (len(lon)): #spocitani delky poloviny rovniku
         try:
             x = float(lon[i])
@@ -217,12 +228,22 @@ def graphic(i, j):
         forward(20 * y)
         up()
         x = x - xi
+    for k in range(len(point_g)-1):
+        if len(point_g[k]) == 2:
+            up()
+            setpos((point_g[k][0])*10, (point_g[k][1])*10)
+            down()
+            dot(5, "red")
+            write((k+1), False, align="right")
+        else:
+            continue
     exitonclick()
 
 
 lat = []
 lon = []
 point = [1, 1]
+point_g = []
 
 projection = input('set projection ')  # zjisteni zobrazeni
 while projection != "L" and projection != 'A' and projection != 'B' and projection != 'M':
@@ -261,7 +282,10 @@ if projection == 'M':  # vypsani hodnot z.s. a z.d. pro mercatora + vypocet sour
     latitude(mercator_y)
     point_calc(mercator_x, mercator_y)
 
-i = int((len(lon) + 1) / 2) #vypocet poctu rovnobezek
-j = int((len(lat) + 1) / 2 - 1) #vypocet poctu rovnobezek
+m = int((len(lon) + 1) / 2) #vypocet poctu rovnobezek
+n = int((len(lat) + 1) / 2 - 1) #vypocet poctu rovnobezek
 
-graphic(i, j) #grafika
+try:
+    graphic(m, n, lat, lon, point_g) #grafika
+except UnboundLocalError:
+    print("too large scale to draw grid")
