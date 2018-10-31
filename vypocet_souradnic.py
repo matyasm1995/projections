@@ -224,20 +224,20 @@ lat = []
 long = []
 point = [1, 1]
 
-projection = input('set projection')  # zjisteni zobrazeni
+projection = input('set projection ')  # zjisteni zobrazeni
 while projection != "L" and projection != 'A' and projection != 'B' and projection != 'M':
-    print('choose L for Lambert, A for Marin, B for Braun or M for Mercator')
-    projection = input('set projection')
+    print('choose L for Lambert, A for Marin, B for Braun or M for Mercator ')
+    projection = input('set projection ')
 
-radius = inputFloat('set the radius of the Earth in km or enter 0 to set radius to 6371.11km') #zjisteni polomeru Zeme
+radius = inputFloat('set the radius of the Earth in km or enter 0 to set radius to 6371.11km ') #zjisteni polomeru Zeme
 while radius < 0:
-    radius = inputFloat('set the radius of the Earth in km or enter 0 to set radius to 6371.11km')
+    radius = inputFloat('set the radius of the Earth in km or enter 0 to set radius to 6371.11km ')
 if radius == 0:
     radius = 6371.11
 
-scale = inputInteger('set the scale') #zjisteni meritka
+scale = inputInteger('set the scale ') #zjisteni meritka
 while scale <= 0:
-    scale = inputInteger('set the scale again')
+    scale = inputInteger('set the scale again ')
 
 R = abs((radius / scale) * 100000)  # uprava polomeru Zeme meritkem
 
