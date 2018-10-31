@@ -98,10 +98,10 @@ def longitude(projection_x):
     for i in range(-180, 181, 10):
         x = (projection_x(i))
         if x > 100 or x < -100: #osetreni prilis velkeho x
-            long.append('-')
+            lon.append('-')
         else:
-            long.append(x)
-    print('meridians: ' + str(long))
+            lon.append(x)
+    print('meridians: ' + str(lon))
 
 
 def latitude(projection_y):
@@ -188,9 +188,9 @@ def graphic(i, j):
     :return: grafika
     """
     speed(6)
-    while i < (len(long)): #spocitani delky poloviny rovniku
+    while i < (len(lon)): #spocitani delky poloviny rovniku
         try:
-            x = float(long[i])
+            x = float(lon[i])
             i = i + 1
         except:
             break
@@ -221,7 +221,7 @@ def graphic(i, j):
 
 
 lat = []
-long = []
+lon = []
 point = [1, 1]
 
 projection = input('set projection ')  # zjisteni zobrazeni
@@ -261,7 +261,7 @@ if projection == 'M':  # vypsani hodnot z.s. a z.d. pro mercatora + vypocet sour
     latitude(mercator_y)
     point_calc(mercator_x, mercator_y)
 
-i = int((len(long) + 1) / 2) #vypocet poctu rovnobezek
+i = int((len(lon) + 1) / 2) #vypocet poctu rovnobezek
 j = int((len(lat) + 1) / 2 - 1) #vypocet poctu rovnobezek
 
 graphic(i, j) #grafika
