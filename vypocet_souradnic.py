@@ -98,11 +98,11 @@ def longitude(projection_x):
     for i in range(-180, 181, 10):
         x = (projection_x(i))
         if x > 100 or x < -100: #osetreni prilis velkeho x
-            lon.append('-')
+            lons.append('-')
         else:
-            lon.append(x)
-    print('meridians: ' + str(lon))
-    return lon
+            lons.append(x)
+    print('meridians: ' + str(lons))
+    return lons
 
 
 def latitude(projection_y):
@@ -114,13 +114,13 @@ def latitude(projection_y):
         try:
             y = (projection_y(i))
             if y > 100 or y < -100: #osetreni prilis velkeho y
-                lat.append('-')
+                lats.append('-')
             else:
-                lat.append(y)
+                lats.append(y)
         except: #osetreni mercatora
-            lat.append("-")
-    print('parallels: ' + str(lat))
-    return lat
+            lats.append("-")
+    print('parallels: ' + str(lats))
+    return lats
 
 
 def inputFloat(message):
@@ -134,8 +134,7 @@ def inputFloat(message):
         except ValueError:
             print("Not a number")
             continue
-        else:
-            return userInput
+        return userInput
 
 
 def inputInteger(message):
@@ -149,8 +148,7 @@ def inputInteger(message):
         except ValueError:
             print("Not a integer")
             continue
-        else:
-            return userInput
+        return userInput
 
 
 def point_calc(projection_x, projection_y):
@@ -162,12 +160,12 @@ def point_calc(projection_x, projection_y):
     """
     while point != [0, 0]:
         p = []
-        point[0] = inputFloat('enter longitude of point')
+        point[0] = inputFloat('enter longitude of point: ')
         while point[0] > 180 or point[0] < -180: #osetreni spravneho rozsahu zem. sirky
-            point[0] = inputFloat('enter longitude of point again')
-        point[1] = inputFloat('enter latitude of point')
+            point[0] = inputFloat('enter longitude of point again: ')
+        point[1] = inputFloat('enter latitude of point: ')
         while point[1] > 90 or point[1] < -90: #osetreni spravneho rozsahu zem. delky
-            point[1] = inputFloat('enter latitude of point again')
+            point[1] = inputFloat('enter latitude of point again: ')
         if -100 < projection_x(point[0]) < 100: #osetreni prilis velkeho x
             x = projection_x(point[0])
             p.append(x)
@@ -189,27 +187,29 @@ def point_calc(projection_x, projection_y):
                 point_g.append(p)
     return point_g
 
-def graphic(m, n, lat, lon, point_g):
+def graphic(lats, lons, point_g):
     """
     funkce pro vykresleni souradnicove site
     :param i: index prvku pole y-souřadnic
     :param j: index prvku pole x-souřadnic
-    :param lat: pole souřadnic zeměpisné šířky
-    :param lon: pole souřadnic zeměpisné délky
+    :param lats: pole souřadnic zeměpisné šířky
+    :param lons: pole souřadnic zeměpisné délky
     :param point_g: pole bodů pro vykreslení
     :return: kreslí grafiku
     """
     speed(10)
     ht()
-    while m < (len(lon)): #spocitani delky poloviny rovniku
+    m = int((len(lons) + 1) / 2)  # vypocet poctu rovnobezek
+    n = int((len(lats) + 1) / 2 - 1)  # vypocet poctu rovnobezek
+    while m < (len(lons)): #spocitani delky poloviny rovniku
         try:
-            x = float(lon[m])
+            x = float(lons[m])
             m = m + 1
         except:
             break
-    while n < (len(lat)): #vykresleni rovnobezek
+    while n < (len(lats)): #vykresleni rovnobezek
         try:
-            y = float(lat[n])
+            y = float(lats[n])
             up()
             setpos(x * -10, y * 10)
             down()
@@ -239,25 +239,25 @@ def graphic(m, n, lat, lon, point_g):
     exitonclick()
 
 
-lat = []
-lon = []
+lats = []
+lons = []
 point = [1, 1]
 point_g = []
 
-projection = input('set projection ')  # zjisteni zobrazeni
-while projection != "L" and projection != 'A' and projection != 'B' and projection != 'M':
-    print('choose L for Lambert, A for Marin, B for Braun or M for Mercator ')
-    projection = input('set projection ')
+projection = input('set projection: ')  # zjisteni zobrazeni
+while projection not in ('L', 'A', 'B', 'M' ):
+    print('choose L for Lambert, A for Marin, B for Braun or M for Mercator: ')
+    projection = input('set projection: ')
 
-radius = inputFloat('set the radius of the Earth in km or enter 0 to set radius to 6371.11km ') #zjisteni polomeru Zeme
+radius = inputFloat('set the radius of the Earth in km or enter 0 to set radius to 6371.11km: ') #zjisteni polomeru Zeme
 while radius < 0:
-    radius = inputFloat('set the radius of the Earth in km or enter 0 to set radius to 6371.11km ')
+    radius = inputFloat('set the radius of the Earth in km or enter 0 to set radius to 6371.11km: ')
 if radius == 0:
     radius = 6371.11
 
-scale = inputInteger('set the scale ') #zjisteni meritka
+scale = inputInteger('set the scale: ') #zjisteni meritka
 while scale <= 0:
-    scale = inputInteger('set the scale again ')
+    scale = inputInteger('set the scale again: ')
 
 R = abs((radius / scale) * 100000)  # uprava polomeru Zeme meritkem
 
@@ -281,10 +281,7 @@ if projection == 'M':  # vypsani hodnot z.s. a z.d. pro mercatora + vypocet sour
     latitude(mercator_y)
     point_calc(mercator_x, mercator_y)
 
-m = int((len(lon) + 1) / 2) #vypocet poctu rovnobezek
-n = int((len(lat) + 1) / 2 - 1) #vypocet poctu rovnobezek
-
 try:
-    graphic(m, n, lat, lon, point_g) #grafika
+    graphic(lats, lons, point_g) #grafika
 except:
     print("too large scale to draw grid")
