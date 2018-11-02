@@ -4,9 +4,9 @@ from turtle import forward, right, exitonclick, speed, setpos, down, up, dot, wr
 
 def lambert_x(i):
     """
-    funkce pro výpočet x-souřadnice Lamberta
-    :param i: zeměpisná délka
-    :return hodnotu zeměpisné délky v daném souřadnicovém systému:
+    function for calculating the map coordinates of the meridians using the Lambert projection
+    :param i: longitude
+    :return: the value of the longitude in the specified coordinate system
     """
     x = R * (radians(i))
     x = round(x, 1)
@@ -15,9 +15,10 @@ def lambert_x(i):
 
 def lambert_y(i):
     """
-    funkce pro výpočet y-souřadnice Lamberta
-    :param i: zeměpisná šířka
-    :return hodnotu zeměpisné šířky v daném souřadnicovém systému:
+    function for calculating the map coordinates of the parallels using the Mercator projection
+    :param i: latitude
+    :return: the value of the latitude in the specified coordinate system
+
     """
     y = R * sin(radians(i))
     y = round(y, 1)
@@ -26,9 +27,9 @@ def lambert_y(i):
 
 def marin_x(i):
     """
-    funkce pro výpočet x-souřadnice Marina
-    :param i: zeměpisná délka
-    :return hodnotu zeměpisné délky v daném souřadnicovém systému:
+    function for calculating the map coordinates of the meridians using the Marin projection
+    :param i: longitude
+    :return: the value of the longitude in the specified coordinate system
     """
     x = R * (radians(i))
     x = round(x, 1)
@@ -37,9 +38,9 @@ def marin_x(i):
 
 def marin_y(i):
     """
-    funkce pro výpočet y-souřadnice Marina
-    :param i: zeměpisná šířka
-    :return hodnotu zeměpisné šířky v daném souřadnicovém systému:
+    function for calculating the map coordinates of the parallels using the Marin projection
+    :param i: latitude
+    :return: the value of the latitude in the specified coordinate system
     """
     y = R * (radians(i))
     y = round(y, 1)
@@ -48,9 +49,9 @@ def marin_y(i):
 
 def braun_x(i):
     """
-    funkce pro výpočet x-souřadnice Brauna
-    :param i: zeměpisná délka
-    :return hodnotu zeměpisné délky v daném souřadnicovém systému:
+    function for calculating the map coordinates of the meridians using the Braun projection
+    :param i: longitude
+    :return: the value of the longitude in the specified coordinate system
     """
     x = R * (radians(i))
     x = round(x, 1)
@@ -59,9 +60,9 @@ def braun_x(i):
 
 def braun_y(i):
     """
-    funkce pro výpočet y-souřadnice Brauna
-    :param i: zeměpisná šířka
-    :return hodnotu zeměpisné šířky v daném souřadnicovém systému:
+    function for calculating the map coordinates of the parallels using the Braun projection
+    :param i: latitude
+    :return: the value of the latitude in the specified coordinate system
     """
     y = 2 * R * tan((radians(i)) / 2)
     y = round(y, 1)
@@ -70,9 +71,9 @@ def braun_y(i):
 
 def mercator_x(i):
     """
-    funkce pro výpočet x-souřadnice Mercatora
-    :param i: zeměpisná délka
-    :return hodnotu zeměpisné délky v daném souřadnicovém systému:
+    function for calculating the map coordinates of the meridians using the Mercator projection
+    :param i: longitude
+    :return: the value of the longitude in the specified coordinate system
     """
     x = R * (radians(i))
     x = round(x, 1)
@@ -81,9 +82,9 @@ def mercator_x(i):
 
 def mercator_y(i):
     """
-    funkce pro výpočet y-souřadnice Brauna
-    :param i: zeměpisná šířka
-    :return hodnotu zeměpisné šířky v daném souřadnicovém systému:
+    function for calculating the map coordinates of the parallels using the Mercator projection
+    :param i: latitude
+    :return: the value of the latitude in the specified coordinate system
     """
     y = R * log((1 / tan(((radians(90 - i)) / 2))))
     y = round(y, 1)
@@ -92,8 +93,10 @@ def mercator_y(i):
 
 def longitude(projection_x):
     """
-    funkce, která vytváří a tiskne pole x-souřadnic v určených zeměpisných délkách pro dané zobrazení
-    :param projection_x: zobrazení
+    function that creates and prints the x-coordinate array at certain latitudes for the specified projection
+    :param projection_x: function for calculation x-coordinate
+    :return: array of map coordinates of meridians
+
     """
     for i in range(-180, 181, 10):
         x = (projection_x(i))
@@ -108,8 +111,9 @@ def longitude(projection_x):
 
 def latitude(projection_y):
     """
-    funkce, která vytváří a tiskne pole y-souřadnic v určených zeměpisných šířkách pro dané zobrazení
-    :param projection_y: zobrazení
+    function that creates and prints the y-coordinate array at certain latitudes for the specified projectiontváří a tiskne pole y-souřadnic v určených zeměpisných šířkách pro dané zobrazení
+    :param projection_y: function for calculation y-coordinate
+    :return: array of map coordinates of parallels
     """
     for i in range(-90, 91, 10):
         try:
@@ -127,8 +131,9 @@ def latitude(projection_y):
 
 def inputFloat(message):
     """
-    funkce na ověření, že vstup je float
-    :param message: uživatelův vstup
+    function to verify that the input is float
+    :param message: user input
+    :return: user input
     """
     while True:
         try:
@@ -141,8 +146,9 @@ def inputFloat(message):
 
 def inputInteger(message):
     """
-    funkce na ověření, že vstup je celé číslo
-    :param message: uživatelův vstup
+    function to verify that the input is integer
+    :param message: user input
+    :return: user input
     """
     while True:
         try:
@@ -155,10 +161,10 @@ def inputInteger(message):
 
 def point_calc(projection_x, projection_y):
     """
-    funkce pro výpočet mapových souřadnic zadaného bodu
-    :param projection_x: funkce pro výpočet zobrazení
-    :param projection_y: funkce pro výpočet zobrazení
-    :return: pole zadaných bodů
+    function to calculate map coordinates of a specified point
+    :param projection_x: function for calculation x-coordinate
+    :param projection_y: function for calculation y-coordinate
+    :return: array of map coordinates of entered points
     """
     while point != [0, 0]:
         p = []
@@ -172,7 +178,6 @@ def point_calc(projection_x, projection_y):
             x = projection_x(point[0])
             p.append(x)
             print('x = ' + str(x))
-
         else:
             print('x = - ')
         try:
@@ -192,15 +197,15 @@ def point_calc(projection_x, projection_y):
 
 def graphic(lats, lons, point_g):
     """
-    funkce pro vykresleni souradnicove site a zadanych bodu
-    :param lats: pole souřadnic zeměpisné šířky
-    :param lons: pole souřadnic zeměpisné délky
-    :param point_g: pole bodů pro vykreslení
-    :return: kreslí grafiku
+    function for plotting the coordinate grid and the specified point
+    :param lats: array of map coordinates of parallels
+    :param lons: array of map coordinates of meridians
+    :param point_g: array of map coordinates of entered points
     """
     speed(10)
     ht()
     max_x = max(lons)
+    max_y = max(lats)
     x_ten = (2 * max_x) / len(lons)
 
     for i in range(len(lats)):  # vykresleni rovnobezek
@@ -213,9 +218,9 @@ def graphic(lats, lons, point_g):
     right(90)
 
     for j in range(len(lons) + 1):  # vykresleni poledniku
-        setpos(-10 * max_x, y * 10)
+        setpos(-10 * max_x, max_y * 10)
         down()
-        forward(20 * y)
+        forward(20 * max_y)
         up()
         max_x = max_x - x_ten
 
