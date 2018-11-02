@@ -98,10 +98,10 @@ def longitude(projection_x):
     for i in range(-180, 181, 10):
         x = (projection_x(i))
         if x > 100 or x < -100: #osetreni prilis velkeho x
-            lons.append('-')
+            continue
         else:
             lons.append(x)
-    print('meridians: ' + str(lons))
+    print('meridians: (' + "-; " * int(((37 - len(lons)) / 2)) + "; ".join(map(str, lons)) + "; -" * int(((37 - len(lons)) / 2)) + ')')
     return lons
 
 
@@ -114,12 +114,12 @@ def latitude(projection_y):
         try:
             y = (projection_y(i))
             if y > 100 or y < -100: #osetreni prilis velkeho y
-                lats.append('-')
+                continue
             else:
                 lats.append(y)
         except: #osetreni mercatora
-            lats.append("-")
-    print('parallels: ' + str(lats))
+            continue
+    print('parallels: (' + "-; "*int(((19-len(lats))/2)) + "; " .join(map(str, lats)) + "; -"*int(((19-len(lats))/2)) + ')')
     return lats
 
 
@@ -187,17 +187,9 @@ def point_calc(projection_x, projection_y):
                 point_g.append(p)
     return point_g
 
+"""
 def graphic(lats, lons, point_g):
-    """
-    funkce pro vykresleni souradnicove site
-    :param i: index prvku pole y-souřadnic
-    :param j: index prvku pole x-souřadnic
-    :param lats: pole souřadnic zeměpisné šířky
-    :param lons: pole souřadnic zeměpisné délky
-    :param point_g: pole bodů pro vykreslení
-    :return: kreslí grafiku
-    """
-    speed(10)
+speed(10)
     ht()
     m = int((len(lons) + 1) / 2)  # vypocet poctu rovnobezek
     n = int((len(lats) + 1) / 2 - 1)  # vypocet poctu rovnobezek
@@ -236,6 +228,50 @@ def graphic(lats, lons, point_g):
         down()
         dot(5, "red")
         write((k+1), False, align="right")
+    exitonclick()"""
+
+def graphic(lats, lons, point_g):
+    """
+    funkce pro vykresleni souradnicove site
+    :param i: index prvku pole y-souřadnic
+    :param j: index prvku pole x-souřadnic
+    :param lats: pole souřadnic zeměpisné šířky
+    :param lons: pole souřadnic zeměpisné délky
+    :param point_g: pole bodů pro vykreslení
+    :return: kreslí grafiku
+    """
+    speed(10)
+    ht()
+    m = int((len(lons) + 1) / 2)  # vypocet indexu prvniho nenuloveho clenu pole x-souřadnic
+    n = int((len(lats) + 1) / 2 - 1)  # vypocet indexu prostredniho clenu pole y-souřadnic
+    max_x = max(lons)
+    print(max_x)
+    while n < (len(lats)): #vykresleni rovnobezek
+        y = float(lats[n])
+        up()
+        setpos(max_x * -10, y * 10)
+        down()
+        forward(2 * max_x * 10)
+        up()
+        setpos(max_x * -10, -y * 10)
+        down()
+        forward(2 * max_x * 10)
+        up()
+        n = n + 1
+    xm = max_x / ((m - 1) * 2) #vypocet delky 10 stupnu na ose x
+    right(90)
+    for i in range(m): #vykresleni poledniku
+        setpos(-10 * max_x, y * 10)
+        down()
+        forward(20 * y)
+        up()
+        max_x = max_x - xm
+    for j in range(len(point_g)-1):
+        up()
+        setpos((point_g[j][0])*10, (point_g[j][1])*10)
+        down()
+        dot(5, "red")
+        write((j+1), False, align="right")
     exitonclick()
 
 
