@@ -18,7 +18,6 @@ def lambert_y(i):
     function for calculating the map coordinates of the parallels using the Mercator projection
     :param i: latitude
     :return: the value of the latitude in the specified coordinate system
-
     """
     y = R * sin(radians(i))
     y = round(y, 1)
@@ -100,7 +99,7 @@ def longitude(projection_x):
     """
     for i in range(-180, 181, 10):
         x = (projection_x(i))
-        if x > 100 or x < -100:  # osetreni prilis velkeho x
+        if x > 100 or x < -100:  # limits for map coordinates of x
             continue
         else:
             lons.append(x)
@@ -118,11 +117,11 @@ def latitude(projection_y):
     for i in range(-90, 91, 10):
         try:
             y = (projection_y(i))
-            if y > 100 or y < -100:  # osetreni prilis velkeho y
+            if y > 100 or y < -100:  # limits for map coordinates of x
                 continue
             else:
                 lats.append(y)
-        except:  # osetreni mercatora
+        except:  # handling Mercator
             continue
     print('parallels: (' + "-; " * int(((19 - len(lats)) / 2)) + "; ".join(map(str, lats)) +
           "; -" * int(((19 - len(lats)) / 2)) + ')')
@@ -169,19 +168,19 @@ def point_calc(projection_x, projection_y):
     while point != [0, 0]:
         p = []
         point[0] = inputFloat('enter longitude of point: ')
-        while point[0] > 180 or point[0] < -180:  # osetreni spravneho rozsahu zem. sirky
+        while point[0] > 180 or point[0] < -180:  # the condition of the correct latitude range
             point[0] = inputFloat('enter longitude of point again: ')
         point[1] = inputFloat('enter latitude of point: ')
-        while point[1] > 90 or point[1] < -90:  # osetreni spravneho rozsahu zem. delky
+        while point[1] > 90 or point[1] < -90:  # the condition of the correct longitude range
             point[1] = inputFloat('enter latitude of point again: ')
-        if -100 < projection_x(point[0]) < 100:  # osetreni prilis velkeho x
+        if -100 < projection_x(point[0]) < 100:  # limits for map coordinates of x
             x = projection_x(point[0])
             p.append(x)
             print('x = ' + str(x))
         else:
             print('x = - ')
         try:
-            if -100 < projection_y(point[1]) < 100:  # osetreni prilis velkeho y
+            if -100 < projection_y(point[1]) < 100:  # limits for map coordinates of x
                 y = projection_y(point[1])
                 print('y = ' + str(y))
                 p.append(y)
@@ -200,7 +199,7 @@ def graphic(lats, lons, point_g):
     function for plotting the coordinate grid and the specified point
     :param lats: array of map coordinates of parallels
     :param lons: array of map coordinates of meridians
-    :param point_g: array of map coordinates of entered points
+    :param point_g: array of map coordinates of entered pointsb
     """
     speed(10)
     ht()
@@ -208,7 +207,7 @@ def graphic(lats, lons, point_g):
     max_y = max(lats)
     x_ten = (2 * max_x) / len(lons)
 
-    for i in range(len(lats)):  # vykresleni rovnobezek
+    for i in range(len(lats)):  # plotting of parallels
         y = float(lats[i])
         up()
         setpos(max_x * -10, y * 10)
@@ -217,14 +216,14 @@ def graphic(lats, lons, point_g):
 
     right(90)
 
-    for j in range(len(lons) + 1):  # vykresleni poledniku
+    for j in range(len(lons) + 1):  # plotting of meridians
         setpos(-10 * max_x, max_y * 10)
         down()
         forward(20 * max_y)
         up()
         max_x = max_x - x_ten
 
-    for k in range(len(point_g) - 1):
+    for k in range(len(point_g) - 1): # plotting of points
         up()
         setpos((point_g[k][0]) * 10, (point_g[k][1]) * 10)
         down()
@@ -238,42 +237,42 @@ lons = []
 point = [1, 1]
 point_g = []
 
-projection = input('set projection: ')  # zjisteni zobrazeni
+projection = input('set projection: ')  # detection of the projection
 while projection not in ('L', 'A', 'B', 'M'):
     print('choose L for Lambert, A for Marin, B for Braun or M for Mercator: ')
     projection = input('set projection: ')
 
 radius = inputFloat(
-    'set the radius of the Earth in km or enter 0 to set radius to 6371.11km: ')  # zjisteni polomeru Zeme
+    'set the radius of the Earth in km or enter 0 to set radius to 6371.11km: ')  # detection of the radius of the Earth
 while radius < 0:
     radius = inputFloat('set the radius of the Earth in km or enter 0 to set radius to 6371.11km: ')
 if radius == 0:
     radius = 6371.11
 
-scale = inputInteger('set the scale: ')  # zjisteni meritka
+scale = inputInteger('set the scale: ')  # detection of the scale of the Earth
 while scale <= 0:
     scale = inputInteger('set the scale again: ')
 
-R = abs((radius / scale) * 100000)  # uprava polomeru Zeme meritkem
+R = (radius / scale) * 100000  # convert the Earth's radius by scale
 
-if projection == 'L':  # vypsani hodnot z.s. a z.d. pro lamberta + vypocet souradnic bodu
+if projection == 'L':
     longitude(lambert_x)
     latitude(lambert_y)
     point_calc(lambert_x, lambert_y)
 
-if projection == 'A':  # vypsani hodnot z.s. a z.d. pro marina + vypocet souradnic bodu
+if projection == 'A':
     longitude(marin_x)
     latitude(marin_y)
     point_calc(marin_x, marin_y)
 
-if projection == 'B':  # vypsani hodnot z.s. a z.d. pro brauna + vypocet souradnic bodu
+if projection == 'B':
     longitude(braun_x)
     latitude(braun_y)
     point_calc(braun_x, braun_y)
 
-if projection == 'M':  # vypsani hodnot z.s. a z.d. pro mercatora + vypocet souradnic bodu
+if projection == 'M':
     longitude(mercator_x)
     latitude(mercator_y)
     point_calc(mercator_x, mercator_y)
 
-graphic(lats, lons, point_g)  # grafika
+graphic(lats, lons, point_g)
