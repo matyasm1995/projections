@@ -15,7 +15,7 @@ Kromě samotného výpočtu program vykreslí výslednou souřadnicovou síť a 
   - např. 50000000 pro měřítko 1 : 50 000 000
 - zěměpisná šířka a délka bodů ve stupních
 
-## Výstup
+## Výstupy
 1) tisk mapových souřadnic průsečíků rovnoběžek a poledníků po 10°, vypočtených podle zvoleného zobrazení, měřítka a poloměru Země
     - seznam vzdáleností na ose X - pro zakreslení poledníků
     - seznam vzdálenostá na ose Y - pro zakreslení rovnoběžek
@@ -64,6 +64,7 @@ K výpočtu jednotlivých zobrazení bylo nutné naimportovat modul Math a pro v
     - následně jsou do souřadnicové sítě zakresleny body zadané uživatelem, ovšem pouze ty, jejich vzdálenost od osy x a y nepřesahuje 1 m
     
 
-V následující části programu jsou do proměných ukládány uživatelovy vstupy a volány všechny popsané funkce
+
+V následující části programu jsou do proměných ukládány uživatelovy vstupy a volány postupně všechny výše popsané funkce
  
       
