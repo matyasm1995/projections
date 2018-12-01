@@ -1,9 +1,10 @@
-import json, turtle
+import json, copy
 
 points = {}
 
-with open("points_mercator.geojson") as f:
-    data = json.load(f)
+with open("points_around_zerou.geojson",'r') as in_file:
+    data = json.load(in_file)
+
 
 i = 1
 for feature in data['features']:
@@ -24,25 +25,29 @@ for feature in data['features']:
         if xy[1] > max_y:
             max_y = xy[1]
     i+=1
-print(len(points))
+#print(len(points))
 delka = max_x - min_x
 vyska = max_y - min_y
 
 square = [min_x,min_y,delka,vyska]
 pseudocode = {}
-code = []
-#print(square)
+out = {}
+
 
 def buildQuadtree(array,square,quad,deph):
-    if len(array)<=50:#build a leaf node , store P in it, and return node
-        print(square,quad,deph,len(array))
-        pseudocode[deph] = quad
+    if len(array)<=3:#build a leaf node , store P in it, and return node
+        #print(square,quad,deph,len(array))
+        pseudocode[deph] = str(quad)
         if len(array) != 0:
-            print(array)
-            code = []
+            #print(array)
+            #code = []
             for k in range(deph+1):
-                code.append([k,pseudocode[k]])
-            print(code)
+                if k == 0:
+                    code = pseudocode[k]
+                else: code = code + pseudocode[k]
+            for i in array:
+                out[i]= int(code)
+            #print(code)
         return
     else:
         # partition S into 4 quadrants S1, S2, S3, S4 and use them to partition P into P1, P2, P3, P4
@@ -56,14 +61,13 @@ def buildQuadtree(array,square,quad,deph):
         P2 = select_points(array,[node[0],node[0]+square[2],node[1]-square[3],node[1]])
         P3 = select_points(array,[node[0]-square[2],node[0],node[1]-square[3],node[1]])
         P4 = select_points(array,[node[0]-square[2],node[0],node[1],node[1]+square[3]])
-        print(square,quad,deph,len(array))
-        pseudocode[deph]=quad
+        #print(square,quad,deph,len(array))
+        pseudocode[deph]=str(quad)
         buildQuadtree(P1, S1,1,deph+1)
         buildQuadtree(P2, S2,2,deph+1)
         buildQuadtree(P3, S3,3,deph+1)
         buildQuadtree(P4, S4,4,deph+1)
-
-
+    return out
 def select_points(points,boundaries):
     i = 0
     P = {}
@@ -76,7 +80,22 @@ def select_points(points,boundaries):
             P[k] = [point[0],point[1]]
         else:
             continue
-
     return P
 
-buildQuadtree(points,square,0,0)
+x = buildQuadtree(points,square,0,0)
+print(x)
+
+sorted_by_key = sorted(x.items(), key=lambda kv: kv[0])
+print(sorted_by_key)
+
+i = 0
+for feat in data['features']:
+    feat['properties']['code']=sorted_by_key[i][1]
+    print(sorted_by_key[i][1])
+    i+=1
+
+
+with open('points_out1.geojson', 'w') as out_file:
+    json.dump(data, out_file)
+
+
