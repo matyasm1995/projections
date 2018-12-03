@@ -1,4 +1,4 @@
-import json, sys, click
+import json, sys, turtle, click
 
 if len(sys.argv) < 4:
     print('too few arguments')
@@ -10,8 +10,9 @@ group_size = sys.argv[3]
 
 
 def buildQuadtree(array, square, quad, depth):
-    if len(array) <= group_size:
+    if len(array) <= int(group_size):
         pseudocode[depth] = str(quad)
+        graphic(square)
         if len(array) != 0:
             for k in range(depth + 1):
                 if k == 0:
@@ -32,6 +33,7 @@ def buildQuadtree(array, square, quad, depth):
         P3 = select_points(array, [node[0] - square[2], node[0], node[1] - square[3], node[1]])
         P4 = select_points(array, [node[0] - square[2], node[0], node[1], node[1] + square[3]])
         pseudocode[depth] = str(quad)
+        graphic(square)
         buildQuadtree(P1, S1, 1, depth + 1)
         buildQuadtree(P2, S2, 2, depth + 1)
         buildQuadtree(P3, S3, 3, depth + 1)
@@ -51,6 +53,21 @@ def select_points(points, boundaries):
             continue
     return P
 
+def graphic(s):
+    turtle.speed(10)
+    turtle.ht()
+    turtle.up()
+    turtle.setpos(s[0], s[1])
+    turtle.down()
+    turtle.forward(s[2])
+    turtle.left(90)
+    turtle.forward(s[3])
+    turtle.left(90)
+    turtle.forward(s[2])
+    turtle.left(90)
+    turtle.forward(s[3])
+    turtle.left(90)
+    turtle.up()
 
 with open(in_file, 'r') as in_f:
     data = json.load(in_f)
@@ -76,10 +93,20 @@ for feature in data['features']:
             max_y = xy[1]
     i += 1
 
-length = max_x - min_x
+width = max_x - min_x
 height = max_y - min_y
 
-bbox = [min_x, min_y, length, height]
+bbox = [min_x, min_y, width, height]
+turtle.setworldcoordinates(min_x, min_y, max_x, max_y)
+
+for dot in points:
+    turtle.speed(10)
+    turtle.ht()
+    turtle.up()
+    turtle.setpos(points[dot][0],points[dot][1])
+    turtle.down()
+    turtle.dot(5, "blue")
+
 pseudocode = {}
 out = {}
 
@@ -94,3 +121,5 @@ for feat in data['features']:
 
 with open(out_file, 'w') as out:
     json.dump(data, out)
+
+turtle.exitonclick()
